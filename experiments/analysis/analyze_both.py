@@ -12,13 +12,19 @@ from typing import Dict, List, Tuple
 import pandas as pd
 import numpy as np
 
+# Project root directory
+SCRIPT_DIR = Path(__file__).parent
+FANS_ROOT = SCRIPT_DIR.parent.parent  
+DATA_DIR = FANS_ROOT / "data"
+RESULTS_DIR = FANS_ROOT / "experiments" / "results"
+ANALYSIS_DIR = FANS_ROOT / "experiments" / "analysis"
+
 
 def parse_directory_name(dir_name: str) -> Tuple[int, str, int]:
     """
     Parse directory name to extract nodes, graph_type, and adj_num.
     
     Examples:
-        - mlainas_statduck_data_nodes_10_SF_adj_5 -> (10, 'SF', 5)
         - nodes_20_ER_adj_3 -> (20, 'ER', 3)
     """
     # Pattern with prefix
@@ -36,15 +42,15 @@ def parse_directory_name(dir_name: str) -> Tuple[int, str, int]:
 
 def load_metadata(nodes: int, graph_type: str, adj_num: int) -> Dict:
     """Load metadata from the data directory."""
-    # Try multiple possible paths
+    # Try multiple possible paths within fans/data directory
     possible_paths = [
-        f"/mlainas/statduck/data_both/data_small/nodes_{nodes}/{graph_type}/metadata_{adj_num}.json",
-        f"/home/statduck/causal-flows/data_both/data/nodes_{nodes}/{graph_type}/metadata_{adj_num}.json",
-        f"/home/statduck/causal-flows/data_both/data_small/nodes_{nodes}/{graph_type}/metadata_{adj_num}.json",
+        DATA_DIR / "data_both" / "data_small" / f"nodes_{nodes}" / graph_type / f"metadata_{adj_num}.json",
+        DATA_DIR / "data_both" / "data" / f"nodes_{nodes}" / graph_type / f"metadata_{adj_num}.json",
+        DATA_DIR / "data_small" / f"nodes_{nodes}" / graph_type / f"metadata_{adj_num}.json",
     ]
     
     for metadata_path in possible_paths:
-        if os.path.exists(metadata_path):
+        if metadata_path.exists():
             with open(metadata_path, 'r') as f:
                 return json.load(f)
     
@@ -55,7 +61,6 @@ def load_fans_results(fans_json_path: str) -> Dict:
     """Load FANS results from JSON file."""
     with open(fans_json_path, 'r') as f:
         return json.load(f)
-
 
 def has_simultaneous_shift_files(fans_analysis_dir: Path) -> bool:
     """
@@ -185,7 +190,6 @@ def find_experiment_folders(output_testing_dir: str) -> List[Tuple[str, str]]:
     
     return results
 
-
 def create_results_dataframe(output_testing_dir: str) -> pd.DataFrame:
     """
     Create a comprehensive dataframe with all results.
@@ -238,7 +242,7 @@ def create_results_dataframe(output_testing_dir: str) -> pd.DataFrame:
     return df
 
 
-def calculate_f1_scores(df: pd.DataFrame) -> pd.DataFrame:
+def calculate_f1_scores(df: pd.DataFrame, method_name: str = "FANS") -> pd.DataFrame:
     """
     Calculate F1 scores for function_only vs function_and_noise classification.
     Uses the same logic as analysis.py for consistent F1 calculation.
@@ -322,6 +326,7 @@ def calculate_f1_scores(df: pd.DataFrame) -> pd.DataFrame:
         accuracy = correct / max(total, 1)
         
         results.append({
+            'method': method_name,
             'nodes': nodes,
             'graph_type': graph_type,
             'num_experiments': len(group),
@@ -336,81 +341,250 @@ def calculate_f1_scores(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(results)
 
 
+def find_gpr_files(gpr_dir: str, nodes: int = 10, graph_type: str = 'ER', 
+                   start_idx: int = 1, end_idx: int = 30) -> List[str]:
+    """
+    Find GPR result JSON files in the specified directory.
+    
+    Args:
+        gpr_dir: Base directory for GPR results
+        nodes: Number of nodes
+        graph_type: Graph type (ER or SF)
+        start_idx: Starting index (inclusive)
+        end_idx: Ending index (inclusive)
+    
+    Returns:
+        List of full paths to GPR JSON files
+    """
+    gpr_files = []
+    base_path = Path(gpr_dir) / f"nodes_{nodes}" / graph_type
+    
+    for idx in range(start_idx, end_idx + 1):
+        json_file = base_path / f"gpr_optimized_nodes{nodes}_{graph_type}_{idx}_cpu.json"
+        if json_file.exists():
+            gpr_files.append(str(json_file))
+        else:
+            print(f"Warning: GPR file not found: {json_file}")
+    
+    return gpr_files
+
+
+def load_gpr_result(gpr_json_path: str) -> Dict:
+    """Load GPR result from JSON file."""
+    with open(gpr_json_path, 'r') as f:
+        return json.load(f)
+
+
+def extract_gpr_detection_info(gpr_result: Dict) -> Tuple[List[int], List[int], List[int]]:
+    """
+    Extract detection information from GPR results.
+    
+    Returns:
+        analyzed_nodes: List of analyzed nodes (shifted nodes)
+        detected_function_only: List of nodes detected as function_only
+        detected_function_and_noise: List of nodes detected as function_and_noise
+    """
+    dataset_info = gpr_result.get('dataset_info', {})
+    shifted_nodes = dataset_info.get('shifted_nodes', [])
+    estimated_shift_types = gpr_result.get('estimated_shift_types', {})
+    
+    detected_function_only = []
+    detected_function_and_noise = []
+    
+    for node_idx in shifted_nodes:
+        node_key = str(node_idx)
+        if node_key in estimated_shift_types:
+            shift_type = estimated_shift_types[node_key]
+            
+            if shift_type == 'function':
+                detected_function_only.append(node_idx)
+            elif shift_type == 'simultaneous':
+                detected_function_and_noise.append(node_idx)
+    
+    return shifted_nodes, detected_function_only, detected_function_and_noise
+
+
+def create_gpr_results_dataframe(gpr_dir: str, nodes: int = 10, graph_type: str = 'ER',
+                                 start_idx: int = 1, end_idx: int = 30) -> pd.DataFrame:
+    """
+    Create a comprehensive dataframe with GPR results.
+    """
+    gpr_files = find_gpr_files(gpr_dir, nodes, graph_type, start_idx, end_idx)
+    
+    print(f"\nFound {len(gpr_files)} GPR result files")
+    
+    rows = []
+    
+    for gpr_json_path in gpr_files:
+        try:
+            # Load GPR result
+            gpr_result = load_gpr_result(gpr_json_path)
+            
+            # Extract dataset info (contains ground truth)
+            dataset_info = gpr_result.get('dataset_info', {})
+            nodes = dataset_info.get('node_count', nodes)
+            graph_type = dataset_info.get('graph_type', graph_type)
+            
+            # Extract shift information (ground truth)
+            shifted_nodes, true_function_only, true_function_and_noise = extract_shift_info(dataset_info)
+            
+            # Extract detection information (predictions)
+            analyzed_nodes, detected_function_only, detected_function_and_noise = extract_gpr_detection_info(gpr_result)
+            
+            # Create row
+            row = {
+                'nodes': nodes,
+                'graph_type': graph_type,
+                'adj_num': dataset_info.get('dataset_index', -1),
+                'shifted_nodes': shifted_nodes,
+                'analyzed_nodes': analyzed_nodes,
+                'true_function_only': true_function_only,
+                'true_function_and_noise': true_function_and_noise,
+                'detected_function_only': detected_function_only,
+                'detected_function_and_noise': detected_function_and_noise,
+            }
+            
+            rows.append(row)
+            
+        except Exception as e:
+            print(f"Error processing {gpr_json_path}: {e}")
+            import traceback
+            traceback.print_exc()
+            continue
+    
+    df = pd.DataFrame(rows)
+    df = df.sort_values(['nodes', 'graph_type', 'adj_num']).reset_index(drop=True)
+    
+    return df
+
+
+def create_comparison_table(df_fans_f1: pd.DataFrame, df_gpr_f1: pd.DataFrame) -> pd.DataFrame:
+    """
+    Create a comparison table between FANS and GPR results.
+    
+    Args:
+        df_fans_f1: F1 scores dataframe for FANS
+        df_gpr_f1: F1 scores dataframe for GPR
+    
+    Returns:
+        Comparison dataframe with side-by-side metrics
+    """
+    # Merge on nodes and graph_type
+    comparison = pd.merge(
+        df_fans_f1[['nodes', 'graph_type', 'num_experiments', 'total_classified', 
+                    'correct_classified', 'accuracy', 'f1_function', 'f1_noise', 'f1_macro',
+                    'precision_function', 'recall_function', 'precision_noise', 'recall_noise']],
+        df_gpr_f1[['nodes', 'graph_type', 'num_experiments', 'total_classified', 
+                   'correct_classified', 'accuracy', 'f1_function', 'f1_noise', 'f1_macro',
+                   'precision_function', 'recall_function', 'precision_noise', 'recall_noise']],
+        on=['nodes', 'graph_type'],
+        suffixes=('_fans', '_gpr'),
+        how='outer'
+    )
+    
+    # Calculate differences
+    comparison['accuracy_diff'] = comparison['accuracy_fans'] - comparison['accuracy_gpr']
+    comparison['f1_macro_diff'] = comparison['f1_macro_fans'] - comparison['f1_macro_gpr']
+    comparison['f1_function_diff'] = comparison['f1_function_fans'] - comparison['f1_function_gpr']
+    comparison['f1_noise_diff'] = comparison['f1_noise_fans'] - comparison['f1_noise_gpr']
+    
+    return comparison
+
+
 def main():
     """Main execution function."""
-    output_testing_dir = "/home/statduck/fans/experiments/results/both/exp2_fans"
+    output_testing_dir = str(RESULTS_DIR / "both" / "exp2_fans")
+    gpr_dir = str(RESULTS_DIR / "both" /"exp2_gpr")
     
     print("=" * 80)
-    print("FANS Results Analysis - Function Only vs Function + Noise")
+    print("FANS and GPR Results Analysis - Function Only vs Function + Noise")
+    print("=" * 80)
+    
+    # ========== FANS Analysis ==========
+    print("\n" + "=" * 80)
+    print("ANALYZING FANS RESULTS")
     print("=" * 80)
     
     # Create detailed results dataframe
-    print("\nCreating detailed results dataframe...")
-    df_detailed = create_results_dataframe(output_testing_dir)
+    print("\nCreating FANS detailed results dataframe...")
+    df_fans_detailed = create_results_dataframe(output_testing_dir)
     
-    print(f"\nTotal experiments processed: {len(df_detailed)}")
+    print(f"\nTotal FANS experiments processed: {len(df_fans_detailed)}")
     print(f"\nBreakdown by nodes and graph type:")
-    print(df_detailed.groupby(['nodes', 'graph_type']).size())
+    print(df_fans_detailed.groupby(['nodes', 'graph_type']).size())
     
-    # Display sample of detailed results
-    print("\nSample of detailed results:")
-    for idx, row in df_detailed.head(3).iterrows():
-        print(f"\nExperiment: nodes={row['nodes']}, graph_type={row['graph_type']}, adj_num={row['adj_num']}")
-        print(f"  Shifted nodes: {row['shifted_nodes']}")
-        print(f"  True function_only: {row['true_function_only']}")
-        print(f"  True function_and_noise: {row['true_function_and_noise']}")
-        print(f"  Detected function_only: {row['detected_function_only']}")
-        print(f"  Detected function_and_noise: {row['detected_function_and_noise']}")
+    # Calculate FANS F1 scores
+    print("\nCalculating FANS F1 scores...")
+    df_fans_f1 = calculate_f1_scores(df_fans_detailed, method_name="FANS")
     
-    # Save detailed results
-    detailed_csv = "/home/statduck/fans/experiments/analysis/fans_detailed_results.csv"
-    df_detailed.to_csv(detailed_csv, index=False)
-    print(f"\nDetailed results saved to: {detailed_csv}")
+    # ========== GPR Analysis ==========
+    print("\n" + "=" * 80)
+    print("ANALYZING GPR RESULTS")
+    print("=" * 80)
     
-    # Calculate F1 scores
-    print("\nCalculating F1 scores...")
-    df_f1 = calculate_f1_scores(df_detailed)
+    # Create GPR results dataframe
+    print("\nCreating GPR detailed results dataframe...")
+    df_gpr_detailed = create_gpr_results_dataframe(
+        gpr_dir=gpr_dir,
+        nodes=10,
+        graph_type='ER',
+        start_idx=1,
+        end_idx=30
+    )
+    
+    print(f"\nTotal GPR experiments processed: {len(df_gpr_detailed)}")
+    
+    # Calculate GPR F1 scores
+    print("\nCalculating GPR F1 scores...")
+    df_gpr_f1 = calculate_f1_scores(df_gpr_detailed, method_name="GPR")
+    
+    # ========== Combine Results ==========
+    print("\n" + "=" * 80)
+    print("COMBINING RESULTS")
+    print("=" * 80)
+    
+    # Combine FANS and GPR F1 scores into one dataframe
+    df_combined = pd.concat([df_fans_f1, df_gpr_f1], ignore_index=True)
+    
+    # Save combined F1 scores
+    combined_csv = str(ANALYSIS_DIR / "f1_scores_comparison.csv")
+    df_combined.to_csv(combined_csv, index=False)
+    print(f"\nCombined F1 scores saved to: {combined_csv}")
+    
+    # Display results
+    print("\nCombined F1 Scores (FANS vs GPR):")
+    print(df_combined.to_string(index=False))
+    
+    # ========== Summary Statistics ==========
+    print("\n" + "=" * 80)
+    print("SUMMARY STATISTICS")
+    print("=" * 80)
+    
+    print("\nFANS Performance:")
+    print(f"  Average Accuracy: {df_fans_f1['accuracy'].mean():.4f}")
+    print(f"  Average F1 Macro: {df_fans_f1['f1_macro'].mean():.4f}")
+    print(f"  Average F1 Function: {df_fans_f1['f1_function'].mean():.4f}")
+    print(f"  Average F1 Noise: {df_fans_f1['f1_noise'].mean():.4f}")
+    print(f"  Total nodes classified: {df_fans_f1['total_classified'].sum()}")
+    print(f"  Total correct: {df_fans_f1['correct_classified'].sum()}")
+    
+    print("\nGPR Performance:")
+    print(f"  Average Accuracy: {df_gpr_f1['accuracy'].mean():.4f}")
+    print(f"  Average F1 Macro: {df_gpr_f1['f1_macro'].mean():.4f}")
+    print(f"  Average F1 Function: {df_gpr_f1['f1_function'].mean():.4f}")
+    print(f"  Average F1 Noise: {df_gpr_f1['f1_noise'].mean():.4f}")
+    print(f"  Total nodes classified: {df_gpr_f1['total_classified'].sum()}")
+    print(f"  Total correct: {df_gpr_f1['correct_classified'].sum()}")
+    
+    print("\nPerformance Difference (FANS - GPR):")
+    print(f"  Accuracy difference: {df_fans_f1['accuracy'].mean() - df_gpr_f1['accuracy'].mean():.4f}")
+    print(f"  F1 Macro difference: {df_fans_f1['f1_macro'].mean() - df_gpr_f1['f1_macro'].mean():.4f}")
+    print(f"  F1 Function difference: {df_fans_f1['f1_function'].mean() - df_gpr_f1['f1_function'].mean():.4f}")
+    print(f"  F1 Noise difference: {df_fans_f1['f1_noise'].mean() - df_gpr_f1['f1_noise'].mean():.4f}")
     
     print("\n" + "=" * 80)
-    print("Classification Performance: Function Only vs Function + Noise")
+    print("Analysis complete!")
     print("=" * 80)
-    print(df_f1.to_string(index=False))
-    
-    # Save F1 scores
-    f1_csv = "/home/statduck/fans/experiments/analysis/fans_f1_scores.csv"
-    df_f1.to_csv(f1_csv, index=False)
-    print(f"\nF1 scores saved to: {f1_csv}")
-    
-    # Additional statistics
-    print("\n" + "=" * 80)
-    print("Summary Statistics")
-    print("=" * 80)
-    print(f"\nAverage Accuracy: {df_f1['accuracy'].mean():.4f}")
-    print(f"Average F1 Function: {df_f1['f1_function'].mean():.4f}")
-    print(f"Average F1 Noise: {df_f1['f1_noise'].mean():.4f}")
-    print(f"Average F1 Macro: {df_f1['f1_macro'].mean():.4f}")
-    print(f"Total nodes classified: {df_f1['total_classified'].sum()}")
-    print(f"Total correct: {df_f1['correct_classified'].sum()}")
-    
-    # Breakdown by nodes
-    print("\n\nBy number of nodes:")
-    print(df_f1.groupby('nodes')[['accuracy', 'f1_function', 'f1_noise', 'f1_macro', 'total_classified']].agg({
-        'accuracy': 'mean',
-        'f1_function': 'mean',
-        'f1_noise': 'mean',
-        'f1_macro': 'mean',
-        'total_classified': 'sum'
-    }))
-    
-    # Breakdown by graph type
-    print("\n\nBy graph type:")
-    print(df_f1.groupby('graph_type')[['accuracy', 'f1_function', 'f1_noise', 'f1_macro', 'total_classified']].agg({
-        'accuracy': 'mean',
-        'f1_function': 'mean',
-        'f1_noise': 'mean',
-        'f1_macro': 'mean',
-        'total_classified': 'sum'
-    }))
 
 
 if __name__ == "__main__":

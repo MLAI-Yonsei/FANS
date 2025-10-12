@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import torch
 import numpy as np
 import baselines.splitkci.cond_mean_estimation as cme
-import baselines.splitkci.pval_computations
+import baselines.splitkci.pval_computations as pval_computations
 from scipy.stats import norm as norm_distr
 
 

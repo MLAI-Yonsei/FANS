@@ -1,12 +1,11 @@
 import torch
 from scipy.stats import gamma as gamma_distr
 from scipy.stats import norm as norm_distr
-
+from functorch import vmap
 
 def center_kernel_matrix(K):
     K = K - K.mean(axis=1, keepdims=True)
     return K - K.mean(axis=0, keepdims=True)
-
 
 def compute_gamma_pval_approximation(statistic_value, K, L, return_params=False):
     # From KCI: https://arxiv.org/abs/1202.3775
@@ -26,8 +25,7 @@ def compute_gamma_pval_approximation(statistic_value, K, L, return_params=False)
     return gamma_distr.sf(statistic_value.item(), a=k.item(), loc=0, scale=theta.item())
 
 
-def compute_wild_bootstrap_pval(statistic_value, K, L, compute_stat_func, return_params=False, n_samples=1000,
-                                chunk_size=None):
+def compute_wild_bootstrap_pval(statistic_value, K, L, compute_stat_func, return_params=False, n_samples=1000, chunk_size=None):
     Q = torch.randn((n_samples, K.shape[0]), device=K.device)[:, :, None]
     Q[Q >= 0] = 1
     Q[Q < 0] = -1
@@ -36,7 +34,7 @@ def compute_wild_bootstrap_pval(statistic_value, K, L, compute_stat_func, return
         KQ = (rademacher_vals * rademacher_vals.T) * K
         return compute_stat_func(KQ, L)
 
-    compute_stat_vals = torch.vmap(compute_single_val, chunk_size=chunk_size)
+    compute_stat_vals = vmap(compute_single_val)
     # todo: add an exception for OOM that suggests setting a chunk size
     stat_vals = compute_stat_vals(Q)
 

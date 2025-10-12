@@ -6,8 +6,15 @@ import re
 from typing import Dict, List, Set, Tuple, Optional
 import argparse
 import glob
+from pathlib import Path
 
 from sklearn.metrics import f1_score
+
+# Project root directory
+SCRIPT_DIR = Path(__file__).parent
+FANS_ROOT = SCRIPT_DIR.parent.parent  
+DATA_DIR = FANS_ROOT / "data"
+RESULTS_DIR = FANS_ROOT / "experiments" / "results"
 
 def calculate_f1_score(true_set: Set[int], pred_set: Set[int]) -> Tuple[float, float, float]:
     """
@@ -138,7 +145,6 @@ def load_fans_results(results_dir: str, node_count: int, graph_type: str, datase
     }
     
     # Updated pattern to match the nested structure:
-    # results_dir/mlainas_statduck_data_both_data_nodes_{node_count}_{graph_type}_adj_{dataset_idx}/{run_uuid}/fans_analysis/fans_*.json
     file_pattern = os.path.join(results_dir, f"*nodes_{node_count}_{graph_type}_adj_{dataset_idx}", "*", "fans_analysis", "fans_*.json")
     files = glob.glob(file_pattern)
     
@@ -829,19 +835,19 @@ def print_summary_statistics(df: pd.DataFrame):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Unified analysis of all causal discovery methods')
-    parser.add_argument('--fans_dir', type=str, default='results/fans/', 
+    parser.add_argument('--fans_dir', type=str, default=str(RESULTS_DIR / "both" / "exp2_fans"), 
                        help='Directory containing FANS results')
-    parser.add_argument('--gpr_dir', type=str, default='results/gpr/', 
+    parser.add_argument('--gpr_dir', type=str, default=str(RESULTS_DIR / "gpr"), 
                        help='Directory containing GPR results')
-    parser.add_argument('--iscan_dir', type=str, default='results/iscan/', 
+    parser.add_argument('--iscan_dir', type=str, default=str(RESULTS_DIR / "iscan"), 
                        help='Directory containing ISCAN results')
-    parser.add_argument('--linearccp_dir', type=str, default='results/linearccp_n=50000/', 
+    parser.add_argument('--linearccp_dir', type=str, default=str(RESULTS_DIR / "linearccp_n=50000"), 
                        help='Directory containing LinearCCP results')
-    parser.add_argument('--splitkci_dir', type=str, default='results/splitkci/', 
+    parser.add_argument('--splitkci_dir', type=str, default=str(RESULTS_DIR / "splitkci"), 
                        help='Directory containing SplitKCI results')
-    parser.add_argument('--prediter_dir', type=str, default='results/prediter/', 
+    parser.add_argument('--prediter_dir', type=str, default=str(RESULTS_DIR / "prediter_n=50000"), 
                        help='Directory containing PreDITEr results')
-    parser.add_argument('--data_dir', type=str, default='data/', 
+    parser.add_argument('--data_dir', type=str, default=str(DATA_DIR / "data_small"), 
                        help='Directory containing adjacency matrices')
     parser.add_argument('--output_csv', type=str, default='unified_analysis_results.csv', 
                        help='Output CSV filename')
