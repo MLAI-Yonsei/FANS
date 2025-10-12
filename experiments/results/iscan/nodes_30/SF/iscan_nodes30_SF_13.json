@@ -1,0 +1,385 @@
+{
+  "dataset_info": {
+    "seed": 204,
+    "dataset_index": 13,
+    "node_count": 30,
+    "edge_count": 30,
+    "graph_type": "SF",
+    "shifted_nodes": [
+      26,
+      11,
+      15,
+      28,
+      27,
+      5
+    ],
+    "shift_types": {
+      "26": [
+        "pa_delete"
+      ],
+      "11": [
+        "pa_delete"
+      ],
+      "15": [
+        "pa_delete"
+      ],
+      "28": [
+        "noise_N02"
+      ],
+      "27": [
+        "noise_N02"
+      ],
+      "5": [
+        "noise_N02"
+      ]
+    },
+    "shift_case": "pa_delete_noise_N02",
+    "deleted_parents": {
+      "26": 19,
+      "11": 0,
+      "15": 12
+    }
+  },
+  "model": "iscan",
+  "config_name": "SF",
+  "dag_structure": "standard",
+  "device": "cuda:0",
+  "iscan": {
+    "detected_shifted_nodes": [
+      11,
+      4,
+      15,
+      27,
+      5,
+      6,
+      26,
+      28,
+      0,
+      24,
+      21,
+      7,
+      25,
+      23,
+      29,
+      13,
+      9,
+      8,
+      22,
+      2,
+      16,
+      18,
+      3,
+      19
+    ],
+    "order": [
+      1,
+      20,
+      6,
+      4,
+      21,
+      7,
+      18,
+      12,
+      11,
+      3,
+      9,
+      17,
+      2,
+      29,
+      27,
+      23,
+      8,
+      13,
+      14,
+      25,
+      16,
+      22,
+      10,
+      24,
+      19,
+      5,
+      15,
+      26,
+      28,
+      0
+    ],
+    "ratio_dict": {
+      "11": 2.142488081961253,
+      "4": 1.7974394943202154,
+      "15": 1.6241900272399747,
+      "27": 1.5294978551960774,
+      "5": 1.460897915121304,
+      "6": 1.4046962828496616,
+      "26": 1.3959144228152303,
+      "28": 1.323415186178406,
+      "0": 1.1258041474817777,
+      "24": 1.0539936595355162,
+      "21": 1.017020199711837,
+      "7": 1.0063863114909144,
+      "25": 1.002357992277103,
+      "23": 0.9822355589958407,
+      "29": 0.9197683675106841,
+      "13": 0.8833894138688131,
+      "9": 0.8798451945501543,
+      "8": 0.8745517582638759,
+      "22": 0.8521022685028682,
+      "2": 0.8358156726279796,
+      "16": 0.8102694532632576,
+      "18": 0.803031728967814,
+      "3": 0.7963962116268367,
+      "19": 0.7959751819451152,
+      "20": 0.7402347901186083,
+      "14": 0.717359088550667,
+      "17": 0.7117169215683592,
+      "10": 0.7108354364371274,
+      "12": 0.5854371543522229
+    },
+    "true_shifted_node_summary": {
+      "5": {
+        "is_detected_as_shifted": true,
+        "has_functional_shift_detected": false
+      },
+      "11": {
+        "is_detected_as_shifted": true,
+        "has_functional_shift_detected": true
+      },
+      "15": {
+        "is_detected_as_shifted": true,
+        "has_functional_shift_detected": true
+      },
+      "26": {
+        "is_detected_as_shifted": true,
+        "has_functional_shift_detected": true
+      },
+      "27": {
+        "is_detected_as_shifted": true,
+        "has_functional_shift_detected": true
+      },
+      "28": {
+        "is_detected_as_shifted": true,
+        "has_functional_shift_detected": true
+      }
+    },
+    "functional_shift_results": {
+      "5": {
+        "shifted_edges": [],
+        "test_details": {
+          "y_node": 5,
+          "parents": [
+            0
+          ],
+          "functional_shift_detected": false,
+          "p_value_overall": 0.2801589503607995,
+          "parent_specific_p_values": {},
+          "coefficients_env1": {
+            "Intercept": -1.245524061351634,
+            "bs(x0, df=4, degree=3)[0]": 2.533856312138516,
+            "bs(x0, df=4, degree=3)[1]": 0.3581567114717956,
+            "bs(x0, df=4, degree=3)[2]": 2.7242374817582875,
+            "bs(x0, df=4, degree=3)[3]": -0.15493294210921776
+          },
+          "coefficients_env2": {
+            "Intercept": -1.776949716916934,
+            "bs(x0, df=4, degree=3)[0]": 3.4136602137993233,
+            "bs(x0, df=4, degree=3)[1]": 0.7410315775645172,
+            "bs(x0, df=4, degree=3)[2]": 3.129152155009102,
+            "bs(x0, df=4, degree=3)[3]": 0.24575289809834558
+          }
+        },
+        "has_functional_shift": false
+      },
+      "11": {
+        "shifted_edges": [
+          [
+            0,
+            11
+          ]
+        ],
+        "test_details": {
+          "y_node": 11,
+          "parents": [
+            0
+          ],
+          "functional_shift_detected": true,
+          "p_value_overall": 0.001007532498210395,
+          "parent_specific_p_values": {
+            "0": 0.001007532498210395
+          },
+          "coefficients_env1": {
+            "Intercept": -1.2770490553380816,
+            "bs(x0, df=4, degree=3)[0]": 2.6850017379680438,
+            "bs(x0, df=4, degree=3)[1]": 0.1216909349180613,
+            "bs(x0, df=4, degree=3)[2]": 3.0807412076163927,
+            "bs(x0, df=4, degree=3)[3]": -0.2885053211274373
+          },
+          "coefficients_env2": {
+            "Intercept": -0.7375858017178951,
+            "bs(x0, df=4, degree=3)[0]": 0.9181678037612651,
+            "bs(x0, df=4, degree=3)[1]": 0.4750174811219748,
+            "bs(x0, df=4, degree=3)[2]": 0.7721208362413949,
+            "bs(x0, df=4, degree=3)[3]": 0.9977937672001655
+          }
+        },
+        "has_functional_shift": true
+      },
+      "15": {
+        "shifted_edges": [
+          [
+            12,
+            15
+          ]
+        ],
+        "test_details": {
+          "y_node": 15,
+          "parents": [
+            12
+          ],
+          "functional_shift_detected": true,
+          "p_value_overall": 0.00010978480059076201,
+          "parent_specific_p_values": {
+            "12": 0.00010978480059076201
+          },
+          "coefficients_env1": {
+            "Intercept": -0.11857274751424535,
+            "bs(x12, df=4, degree=3)[0]": 1.7334850680749097,
+            "bs(x12, df=4, degree=3)[1]": -1.4647312644385653,
+            "bs(x12, df=4, degree=3)[2]": 2.4390153544918824,
+            "bs(x12, df=4, degree=3)[3]": -1.8793626176406022
+          },
+          "coefficients_env2": {
+            "Intercept": 0.48817802490279594,
+            "bs(x12, df=4, degree=3)[0]": -0.30793568759784645,
+            "bs(x12, df=4, degree=3)[1]": -0.5975962312504068,
+            "bs(x12, df=4, degree=3)[2]": -0.36089794857552016,
+            "bs(x12, df=4, degree=3)[3]": -1.016872849270663
+          }
+        },
+        "has_functional_shift": true
+      },
+      "26": {
+        "shifted_edges": [
+          [
+            19,
+            26
+          ]
+        ],
+        "test_details": {
+          "y_node": 26,
+          "parents": [
+            19
+          ],
+          "functional_shift_detected": true,
+          "p_value_overall": 0.0005359552856456506,
+          "parent_specific_p_values": {
+            "19": 0.0005359552856456506
+          },
+          "coefficients_env1": {
+            "Intercept": 0.9388944347327123,
+            "bs(x19, df=4, degree=3)[0]": -0.38877567399247215,
+            "bs(x19, df=4, degree=3)[1]": -1.6945440180635034,
+            "bs(x19, df=4, degree=3)[2]": 1.1060979518785896,
+            "bs(x19, df=4, degree=3)[3]": -2.2017272757134814
+          },
+          "coefficients_env2": {
+            "Intercept": 0.4642928504282319,
+            "bs(x19, df=4, degree=3)[0]": -0.5876444662373861,
+            "bs(x19, df=4, degree=3)[1]": -0.5853551298872162,
+            "bs(x19, df=4, degree=3)[2]": -0.2582640247131127,
+            "bs(x19, df=4, degree=3)[3]": -1.169449243313926
+          }
+        },
+        "has_functional_shift": true
+      },
+      "27": {
+        "shifted_edges": [
+          [
+            1,
+            27
+          ]
+        ],
+        "test_details": {
+          "y_node": 27,
+          "parents": [
+            1
+          ],
+          "functional_shift_detected": true,
+          "p_value_overall": 0.006296637523807491,
+          "parent_specific_p_values": {
+            "1": 0.006296637523807491
+          },
+          "coefficients_env1": {
+            "Intercept": 0.30469770245032013,
+            "bs(x1, df=4, degree=3)[0]": 1.8610198084108147,
+            "bs(x1, df=4, degree=3)[1]": -2.5201337641991035,
+            "bs(x1, df=4, degree=3)[2]": 2.2038231313101226,
+            "bs(x1, df=4, degree=3)[3]": -1.9789200653411276
+          },
+          "coefficients_env2": {
+            "Intercept": -0.5249532857195067,
+            "bs(x1, df=4, degree=3)[0]": 2.500091456016291,
+            "bs(x1, df=4, degree=3)[1]": -1.7820709724939343,
+            "bs(x1, df=4, degree=3)[2]": 3.4749584053847293,
+            "bs(x1, df=4, degree=3)[3]": -1.8446443991507244
+          }
+        },
+        "has_functional_shift": true
+      },
+      "28": {
+        "shifted_edges": [
+          [
+            10,
+            28
+          ]
+        ],
+        "test_details": {
+          "y_node": 28,
+          "parents": [
+            10
+          ],
+          "functional_shift_detected": true,
+          "p_value_overall": 0.010201922863253055,
+          "parent_specific_p_values": {
+            "10": 0.010201922863253055
+          },
+          "coefficients_env1": {
+            "Intercept": -0.310294944777876,
+            "bs(x10, df=4, degree=3)[0]": 2.0691728794685917,
+            "bs(x10, df=4, degree=3)[1]": -1.3559848103630583,
+            "bs(x10, df=4, degree=3)[2]": 2.46826356261174,
+            "bs(x10, df=4, degree=3)[3]": -2.0169264842644417
+          },
+          "coefficients_env2": {
+            "Intercept": 0.5948286110358222,
+            "bs(x10, df=4, degree=3)[0]": 1.179615447048168,
+            "bs(x10, df=4, degree=3)[1]": -2.7187906938418305,
+            "bs(x10, df=4, degree=3)[2]": 1.9477022431841604,
+            "bs(x10, df=4, degree=3)[3]": -2.0851152296781787
+          }
+        },
+        "has_functional_shift": true
+      }
+    },
+    "all_shifted_edges": [
+      [
+        0,
+        11
+      ],
+      [
+        12,
+        15
+      ],
+      [
+        19,
+        26
+      ],
+      [
+        1,
+        27
+      ],
+      [
+        10,
+        28
+      ]
+    ]
+  }
+}

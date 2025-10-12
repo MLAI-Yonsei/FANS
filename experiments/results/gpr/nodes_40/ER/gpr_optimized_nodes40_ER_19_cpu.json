@@ -1,0 +1,66 @@
+{
+  "dataset_info": {
+    "seed": 240,
+    "dataset_index": 19,
+    "node_count": 40,
+    "edge_count": 40,
+    "graph_type": "ER",
+    "shifted_nodes": [
+      30,
+      7,
+      32,
+      21,
+      31,
+      10,
+      36,
+      8
+    ],
+    "shift_types": {
+      "30": [
+        "pa_delete"
+      ],
+      "7": [
+        "pa_delete"
+      ],
+      "32": [
+        "pa_delete"
+      ],
+      "21": [
+        "pa_delete"
+      ],
+      "31": [
+        "noise_laplace"
+      ],
+      "10": [
+        "noise_laplace"
+      ],
+      "36": [
+        "noise_laplace"
+      ],
+      "8": [
+        "noise_laplace"
+      ]
+    },
+    "shift_case": "pa_delete_noise_laplace",
+    "deleted_parents": {
+      "30": 4,
+      "7": 4,
+      "32": 8,
+      "21": 0
+    }
+  },
+  "model": "gpr_optimized",
+  "num_permutations": 100,
+  "computing_device": "CPU",
+  "cupy_available": true,
+  "estimated_shift_types": {
+    "32": "noise",
+    "36": "noise",
+    "7": "noise",
+    "8": "noise",
+    "10": "noise",
+    "21": "function",
+    "30": "noise",
+    "31": "noise"
+  }
+}

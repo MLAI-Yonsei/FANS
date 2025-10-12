@@ -1,0 +1,214 @@
+{
+  "dataset_info": {
+    "seed": 52,
+    "dataset_index": 11,
+    "node_count": 10,
+    "edge_count": 10,
+    "graph_type": "ER",
+    "shifted_nodes": [
+      5,
+      7
+    ],
+    "shift_types": {
+      "5": [
+        "pa_delete"
+      ],
+      "7": [
+        "noise_N02"
+      ]
+    },
+    "shift_case": "pa_delete_noise_N02",
+    "deleted_parents": {
+      "5": 0
+    }
+  },
+  "model": "linearccp",
+  "exp_type": "synthetic",
+  "config_name": "ER",
+  "device": "cuda:0",
+  "linearccp": {
+    "shifted_nodes": [
+      5,
+      6,
+      7,
+      9
+    ],
+    "functional_change_nodes": [
+      5,
+      6,
+      9
+    ],
+    "noise_change_nodes": [
+      7
+    ],
+    "node_results": {
+      "5": {
+        "is_shifted": true,
+        "parents": [
+          0,
+          2
+        ],
+        "function_test": {
+          "f_statistic": 4.641576353456221,
+          "p_value": 0.009746907325658971,
+          "is_function_changed": true,
+          "beta_env1": [
+            -0.005804479932501333,
+            0.03931043331653869
+          ],
+          "beta_env2": [
+            -0.0030453490656304817,
+            -0.060414129204929425
+          ]
+        },
+        "noise_test": {
+          "ks_statistic": 0.06,
+          "p_value": 0.05462666510701526,
+          "is_noise_changed": false
+        }
+      },
+      "6": {
+        "is_shifted": true,
+        "parents": [
+          0,
+          1,
+          5
+        ],
+        "function_test": {
+          "f_statistic": 4.369432897931074,
+          "p_value": 0.004490505865040628,
+          "is_function_changed": true,
+          "beta_env1": [
+            -0.09128424375969181,
+            0.06224339071421214,
+            0.27291089418804204
+          ],
+          "beta_env2": [
+            -0.004085934210990004,
+            0.021404586823270705,
+            0.11016427037753371
+          ]
+        },
+        "noise_test": {
+          "ks_statistic": 0.034,
+          "p_value": 0.6101664688189142,
+          "is_noise_changed": false
+        }
+      },
+      "7": {
+        "is_shifted": true,
+        "parents": [
+          0
+        ],
+        "function_test": {
+          "f_statistic": 3.149229334410644,
+          "p_value": 0.07611522117436853,
+          "is_function_changed": false,
+          "beta_env1": [
+            -0.0712811951229916
+          ],
+          "beta_env2": [
+            -0.011160238681306785
+          ]
+        },
+        "noise_test": {
+          "ks_statistic": 0.085,
+          "p_value": 0.0014488954599620356,
+          "is_noise_changed": true
+        }
+      },
+      "8": {
+        "is_shifted": false,
+        "parents": [
+          1,
+          2,
+          7
+        ],
+        "function_test": {
+          "f_statistic": 2.579772560484758,
+          "p_value": 0.05202117965072017,
+          "is_function_changed": false,
+          "beta_env1": [
+            0.04730699011908116,
+            0.03543055927594713,
+            0.23157125749749224
+          ],
+          "beta_env2": [
+            0.0511042045655168,
+            -0.012085748553485053,
+            0.08546808965401038
+          ]
+        },
+        "noise_test": {
+          "ks_statistic": 0.042,
+          "p_value": 0.34112475112661245,
+          "is_noise_changed": false
+        }
+      },
+      "9": {
+        "is_shifted": true,
+        "parents": [
+          1
+        ],
+        "function_test": {
+          "f_statistic": 7.680864347378406,
+          "p_value": 0.005632710004602193,
+          "is_function_changed": true,
+          "beta_env1": [
+            0.024465439892511574
+          ],
+          "beta_env2": [
+            -0.06149013185533864
+          ]
+        },
+        "noise_test": {
+          "ks_statistic": 0.035,
+          "p_value": 0.5728904395829821,
+          "is_noise_changed": false
+        }
+      }
+    },
+    "metrics": {
+      "true_positives": [
+        5,
+        7
+      ],
+      "false_positives": [
+        6,
+        9
+      ],
+      "false_negatives": [],
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1_score": 0.6666666666666666
+    }
+  },
+  "complexity_analysis": {
+    "success": true,
+    "error": null,
+    "dataset_params": {
+      "n_samples": 1000,
+      "n_nodes": 10,
+      "avg_parents": 1.0,
+      "max_parents": 3,
+      "total_edges": 10
+    },
+    "time_complexity": {
+      "execution_time_seconds": 0.0576319694519043,
+      "execution_time_minutes": 0.000960532824198405
+    },
+    "space_complexity": {
+      "peak_rss_mb": 589.9140625,
+      "peak_memory_increase_mb": 0.0,
+      "start_rss_mb": 589.9140625,
+      "os": "Linux"
+    },
+    "scalability_metrics": {
+      "time_per_node_sec": 0.005763196945190429,
+      "time_per_sample_sec": 5.76319694519043e-05,
+      "time_per_edge_sec": 0.005763196945190429,
+      "memory_per_node_mb": 0.0,
+      "memory_per_sample_mb": 0.0
+    }
+  }
+}

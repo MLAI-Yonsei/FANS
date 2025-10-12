@@ -1,0 +1,252 @@
+{
+  "dataset_info": {
+    "seed": 50,
+    "dataset_index": 9,
+    "node_count": 10,
+    "edge_count": 10,
+    "graph_type": "ER",
+    "shifted_nodes": [
+      5,
+      8
+    ],
+    "shift_types": {
+      "5": [
+        "sin_cos"
+      ],
+      "8": [
+        "noise_laplace"
+      ]
+    },
+    "shift_case": "sin_cos_noise_laplace",
+    "deleted_parents": {}
+  },
+  "model": "linearccp",
+  "exp_type": "synthetic",
+  "config_name": "ER",
+  "device": "cuda:0",
+  "linearccp": {
+    "shifted_nodes": [
+      5,
+      6,
+      8,
+      9
+    ],
+    "functional_change_nodes": [
+      5,
+      6,
+      8,
+      9
+    ],
+    "noise_change_nodes": [
+      5,
+      8
+    ],
+    "node_results": {
+      "3": {
+        "is_shifted": false,
+        "parents": [
+          1
+        ],
+        "function_test": {
+          "f_statistic": 3.537713664255638,
+          "p_value": 0.05999099978957967,
+          "is_function_changed": false,
+          "beta_env1": [
+            0.002122095256470379
+          ],
+          "beta_env2": [
+            -0.006123099174880296
+          ]
+        },
+        "noise_test": {
+          "ks_statistic": 0.0039000000000000146,
+          "p_value": 0.840022849787458,
+          "is_noise_changed": false
+        }
+      },
+      "4": {
+        "is_shifted": false,
+        "parents": [
+          0
+        ],
+        "function_test": {
+          "f_statistic": 2.386513637405615,
+          "p_value": 0.12238946413687946,
+          "is_function_changed": false,
+          "beta_env1": [
+            0.002583167780793653
+          ],
+          "beta_env2": [
+            -0.004123525867457002
+          ]
+        },
+        "noise_test": {
+          "ks_statistic": 0.0043000000000000815,
+          "p_value": 0.7426851862704493,
+          "is_noise_changed": false
+        }
+      },
+      "5": {
+        "is_shifted": true,
+        "parents": [
+          2
+        ],
+        "function_test": {
+          "f_statistic": 2126.835069851981,
+          "p_value": 1.1102230246251565e-16,
+          "is_function_changed": true,
+          "beta_env1": [
+            0.005772308208414545
+          ],
+          "beta_env2": [
+            0.22295412107568754
+          ]
+        },
+        "noise_test": {
+          "ks_statistic": 0.07174000000000003,
+          "p_value": 2.4857317297870077e-112,
+          "is_noise_changed": true
+        }
+      },
+      "6": {
+        "is_shifted": true,
+        "parents": [
+          0,
+          1
+        ],
+        "function_test": {
+          "f_statistic": 5.48361405736481,
+          "p_value": 0.004155538064128161,
+          "is_function_changed": true,
+          "beta_env1": [
+            -0.002961135409722223,
+            0.004744330635822962
+          ],
+          "beta_env2": [
+            -0.0073523608009000525,
+            -0.011944779583592876
+          ]
+        },
+        "noise_test": {
+          "ks_statistic": 0.0045199999999999685,
+          "p_value": 0.6849224542751211,
+          "is_noise_changed": false
+        }
+      },
+      "7": {
+        "is_shifted": false,
+        "parents": [
+          6
+        ],
+        "function_test": {
+          "f_statistic": 1.6318721195659194,
+          "p_value": 0.20144726936368673,
+          "is_function_changed": false,
+          "beta_env1": [
+            0.02261344768069295
+          ],
+          "beta_env2": [
+            0.03054395584298867
+          ]
+        },
+        "noise_test": {
+          "ks_statistic": 0.0027800000000000047,
+          "p_value": 0.9901116464472421,
+          "is_noise_changed": false
+        }
+      },
+      "8": {
+        "is_shifted": true,
+        "parents": [
+          3,
+          5
+        ],
+        "function_test": {
+          "f_statistic": 55.34327637800215,
+          "p_value": 1.1102230246251565e-16,
+          "is_function_changed": true,
+          "beta_env1": [
+            0.13982670996771304,
+            0.13006346862249357
+          ],
+          "beta_env2": [
+            0.1491943567392401,
+            0.04457438850811676
+          ]
+        },
+        "noise_test": {
+          "ks_statistic": 0.040440000000000004,
+          "p_value": 5.815584035721697e-36,
+          "is_noise_changed": true
+        }
+      },
+      "9": {
+        "is_shifted": true,
+        "parents": [
+          5,
+          6
+        ],
+        "function_test": {
+          "f_statistic": 74.85014700145055,
+          "p_value": 1.1102230246251565e-16,
+          "is_function_changed": true,
+          "beta_env1": [
+            0.13424428395984828,
+            0.02879941537401809
+          ],
+          "beta_env2": [
+            0.03788684443576629,
+            0.031576186818251695
+          ]
+        },
+        "noise_test": {
+          "ks_statistic": 0.0063800000000000245,
+          "p_value": 0.2596215325996456,
+          "is_noise_changed": false
+        }
+      }
+    },
+    "metrics": {
+      "true_positives": [
+        5,
+        8
+      ],
+      "false_positives": [
+        6,
+        9
+      ],
+      "false_negatives": [],
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1_score": 0.6666666666666666
+    }
+  },
+  "complexity_analysis": {
+    "success": true,
+    "error": null,
+    "dataset_params": {
+      "n_samples": 50000,
+      "n_nodes": 10,
+      "avg_parents": 1.0,
+      "max_parents": 2,
+      "total_edges": 10
+    },
+    "time_complexity": {
+      "execution_time_seconds": 0.47493529319763184,
+      "execution_time_minutes": 0.00791558821996053
+    },
+    "space_complexity": {
+      "peak_rss_mb": 7367.7890625,
+      "peak_memory_increase_mb": 0.0,
+      "start_rss_mb": 7367.7890625,
+      "os": "Linux"
+    },
+    "scalability_metrics": {
+      "time_per_node_sec": 0.04749352931976318,
+      "time_per_sample_sec": 9.498705863952637e-06,
+      "time_per_edge_sec": 0.04749352931976318,
+      "memory_per_node_mb": 0.0,
+      "memory_per_sample_mb": 0.0
+    }
+  }
+}
