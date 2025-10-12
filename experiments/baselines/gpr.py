@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-import cupy as cp
 import pandas as pd
 from scipy.linalg import eigh
 from scipy.spatial.distance import pdist, squareform
@@ -16,7 +15,6 @@ import gc
 
 # Set random seeds for reproducibility
 np.random.seed(42)
-cp.random.seed(42)
 
 # Helper function to calculate Gaussian Kernel matrix
 def gaussian_kernel(X, length_scale=1.0):
@@ -510,12 +508,6 @@ def partial_permutation_test_optimized(env1_data, env2_data, y_node_col, dag_adj
         
     except Exception as e:
         return {"error": f"Unexpected error: {str(e)}"}
-    finally:
-        # Clean up GPU memory
-        if 'cp' in locals():
-            cp.get_default_memory_pool().free_all_blocks()
-        gc.collect()
-
 
 # --- Example Usage (Simulation Study in Original Paper of GPR(Li et al., 2021))---
 if __name__ == '__main__':
