@@ -76,12 +76,6 @@ The FANS (Flow-based Analysis of Noise Shift) method leverages trained causal no
 
 ### Synthetic Data
 
-You can create n=50,000 synthetic data set
-```
-python data/generate_data.py
-```
-
-
 Synthetic datasets are organized by node count and graph type:
 
 ```
@@ -175,4 +169,12 @@ python experiments/experiment_script.py \
 ```
 
 
+## Results and Analysis
 
+### Analysis
+
+Generate unified results CSV:
+
+```bash
+python experiments/analysis/analysis.py
+```
