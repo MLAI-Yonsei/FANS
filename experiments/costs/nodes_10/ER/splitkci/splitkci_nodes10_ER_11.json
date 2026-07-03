@@ -1,0 +1,89 @@
+{
+  "dataset_info": {
+    "seed": 52,
+    "dataset_index": 11,
+    "node_count": 10,
+    "edge_count": 10,
+    "graph_type": "ER",
+    "shifted_nodes": [
+      5,
+      7
+    ],
+    "shift_types": {
+      "5": [
+        "pa_delete"
+      ],
+      "7": [
+        "noise_N02"
+      ]
+    },
+    "shift_case": "pa_delete_noise_N02",
+    "deleted_parents": {
+      "5": 0
+    }
+  },
+  "model": "splitkci",
+  "exp_type": "synthetic",
+  "config_name": "ER",
+  "device": "cpu",
+  "splitkci": {
+    "shifted_nodes": [
+      5,
+      6,
+      7
+    ],
+    "shift_details": {
+      "5": {
+        "p_value": 0.0,
+        "num_parents": 2,
+        "parents": [
+          0,
+          2
+        ],
+        "shift_detected": true
+      },
+      "6": {
+        "p_value": 0.0,
+        "num_parents": 3,
+        "parents": [
+          0,
+          1,
+          5
+        ],
+        "shift_detected": true
+      },
+      "7": {
+        "p_value": 0.0,
+        "num_parents": 1,
+        "parents": [
+          0
+        ],
+        "shift_detected": true
+      },
+      "8": {
+        "p_value": 0.5329999923706055,
+        "num_parents": 3,
+        "parents": [
+          1,
+          2,
+          7
+        ],
+        "shift_detected": false
+      },
+      "9": {
+        "p_value": 0.47999998927116394,
+        "num_parents": 1,
+        "parents": [
+          1
+        ],
+        "shift_detected": false
+      }
+    },
+    "num_parent_child_pairs": 5,
+    "detection_time_seconds": 7.065269470214844,
+    "alpha": 0.05,
+    "train_test_split": 0.001
+  },
+  "success": true,
+  "error": null
+}

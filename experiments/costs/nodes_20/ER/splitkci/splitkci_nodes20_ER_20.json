@@ -1,0 +1,154 @@
+{
+  "dataset_info": {
+    "seed": 121,
+    "dataset_index": 20,
+    "node_count": 20,
+    "edge_count": 20,
+    "graph_type": "ER",
+    "shifted_nodes": [
+      17,
+      18,
+      3,
+      7
+    ],
+    "shift_types": {
+      "17": [
+        "pa_delete"
+      ],
+      "18": [
+        "pa_delete"
+      ],
+      "3": [
+        "noise_laplace"
+      ],
+      "7": [
+        "noise_laplace"
+      ]
+    },
+    "shift_case": "pa_delete_noise_laplace",
+    "deleted_parents": {
+      "17": 7,
+      "18": 5
+    }
+  },
+  "model": "splitkci",
+  "exp_type": "synthetic",
+  "config_name": "ER",
+  "device": "cpu",
+  "splitkci": {
+    "shifted_nodes": [
+      5,
+      6,
+      7,
+      9,
+      12,
+      17,
+      18
+    ],
+    "shift_details": {
+      "3": {
+        "p_value": 0.5019999742507935,
+        "num_parents": 1,
+        "parents": [
+          1
+        ],
+        "shift_detected": false
+      },
+      "5": {
+        "p_value": 0.0,
+        "num_parents": 2,
+        "parents": [
+          3,
+          4
+        ],
+        "shift_detected": true
+      },
+      "6": {
+        "p_value": 0.0,
+        "num_parents": 1,
+        "parents": [
+          4
+        ],
+        "shift_detected": true
+      },
+      "7": {
+        "p_value": 0.0,
+        "num_parents": 2,
+        "parents": [
+          5,
+          6
+        ],
+        "shift_detected": true
+      },
+      "9": {
+        "p_value": 0.0,
+        "num_parents": 2,
+        "parents": [
+          5,
+          7
+        ],
+        "shift_detected": true
+      },
+      "10": {
+        "p_value": 0.5009999871253967,
+        "num_parents": 1,
+        "parents": [
+          8
+        ],
+        "shift_detected": false
+      },
+      "11": {
+        "p_value": 0.4650000035762787,
+        "num_parents": 3,
+        "parents": [
+          3,
+          4,
+          7
+        ],
+        "shift_detected": false
+      },
+      "12": {
+        "p_value": 0.0,
+        "num_parents": 2,
+        "parents": [
+          4,
+          8
+        ],
+        "shift_detected": true
+      },
+      "16": {
+        "p_value": 0.49399998784065247,
+        "num_parents": 1,
+        "parents": [
+          6
+        ],
+        "shift_detected": false
+      },
+      "17": {
+        "p_value": 0.0,
+        "num_parents": 3,
+        "parents": [
+          0,
+          2,
+          7
+        ],
+        "shift_detected": true
+      },
+      "18": {
+        "p_value": 0.0,
+        "num_parents": 2,
+        "parents": [
+          5,
+          13
+        ],
+        "shift_detected": true
+      }
+    },
+    "num_parent_child_pairs": 11,
+    "detection_time_seconds": 15.627735376358032,
+    "alpha": 0.05,
+    "train_test_split": 0.001
+  },
+  "success": true,
+  "error": null
+}

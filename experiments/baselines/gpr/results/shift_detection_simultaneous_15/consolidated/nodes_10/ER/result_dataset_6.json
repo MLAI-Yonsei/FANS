@@ -1,0 +1,72 @@
+{
+  "dataset_info": {
+    "dataset_index": 6,
+    "node_count": 10,
+    "graph_type": "ER",
+    "shifted_nodes": [
+      4,
+      5
+    ],
+    "shift_types": {
+      "4": [
+        "simultaneous"
+      ],
+      "5": [
+        "function"
+      ]
+    },
+    "shift_case": "simultaneous_function"
+  },
+  "model": "gpr",
+  "node_results": {
+    "4": {
+      "true_shift": "simultaneous",
+      "shift_detected": "simultaneous",
+      "correct": true,
+      "H0": {
+        "loglik": -2723.3861,
+        "delta2": 189.3253,
+        "sigma2": 0.8528
+      },
+      "H1": {
+        "loglik": -2430.8563,
+        "converged": true
+      },
+      "H1.unequal": {
+        "loglik": -2422.663,
+        "converged": true
+      },
+      "elapsed_time": 146.7822
+    },
+    "5": {
+      "true_shift": "function",
+      "shift_detected": "simultaneous",
+      "correct": false,
+      "H0": {
+        "loglik": -2653.607,
+        "delta2": 1304.8447,
+        "sigma2": 0.7726
+      },
+      "H1": {
+        "loglik": -2383.8161,
+        "converged": true
+      },
+      "H1.unequal": {
+        "loglik": -2382.2103,
+        "converged": true
+      },
+      "elapsed_time": 193.4035
+    }
+  },
+  "estimated_shift_types": {
+    "4": "simultaneous",
+    "5": "simultaneous"
+  },
+  "node_elapsed_times": {
+    "4": 146.7822,
+    "5": 193.4035
+  },
+  "total_elapsed_time": 340.1857,
+  "timestamp_start": "2026-01-18 16:05:17",
+  "timestamp_end": "2026-01-18 16:10:57"
+}

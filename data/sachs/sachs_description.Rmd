@@ -1,0 +1,72 @@
+---
+title: "sachs_description"
+output: html_document
+date: '2023-02-17'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Dataset description
+
+**Flow cytometry data and causal model from Sachs et al. (2005)**
+
+
+### Description
+
+Nine different perturbation conditions were applied to sets of individual cells. A multiparameter flow cytometer simultaneously recorded levels of 11 phosphoproteins and phospholipids in individual cells in each perturbation data set. The data are continuous, as they represent the concentration of the molecules under investigation. This data conglomerate was subjected to Bayesian network analysis, which extracts an influence diagram reflecting dependencies and causal relationships in the underlying signaling network. Data were collected after a series of stimulatory cues and inhibitory interventions, with cell reactions stopped at 15 min after stimulation by fixation, to profile the effects of each condition on the intracellular signaling networks of human primary naïve CD4+ T cells, downstream of CD3, CD28, and LFA-1 activation.
+
+The following conditions were used:
+
+| File      | Stimulation | Description |
+|---------- | ----------- | ---------- |
+|cd3cd28.csv | CD3, CD28		|				 T cell activation |
+|cd3cd28icam2.csv | CD3, CD28, ICAM-2	|			LFA-1 signaling induction|
+|cd3cd28_aktinhib.csv | CD3, CD28, akt-inhibitor|			PKA activation	|
+|cd3cd28_g0076.csv | CD3, CD28, G0076		|		AKT inhibition |
+|cd3cd28_psitect.csv | CD3, CD28, Psitectorigenin	|		MEK1/MEK2 inhibition|
+|cd3cd28_u0126.csv | CD3, CD28, U0126		|		PKC activation|
+|cd3cd28_ly.csv | CD3, CD28, LY294002		|		PKC inhibition|
+|pma.csv | PMA			|			PIP2 production inhibition|
+|b2camp.csv | β2camp	|	AKT inhibition|
+|cd3cd28icam2_aktinhib.csv | CD3, CD28, ICAM-2, akt-inhib	 |	simulated dataset|
+|cd3cd28icam2_g0076.csv | CD3, CD28, ICAM-2, G0076			|simulated dataset|
+|cd3cd28icam2_psit.csv | CD3, CD28, ICAM-2, Psitectorigenin 	|	simulated dataset|
+|cd3cd28icam2_u0126.csv | CD3, CD28, ICAM-2, U0126			|simulated dataset|
+|cd3cd28icam2_ly.csv | CD3, CD28, ICAM-2, LY294002		|simulated dataset|
+
+
+
+
+
+### Format
+Each independent sample in this data set consists of quantitative amounts of each of the 11 phosphorylated molecules, simultaneously measured from single cells.
+Each dataset contains measurements to the following 11 variables:
+
+| Measured molecule      | Antibody specificity|
+| --------- | --------- |
+| Raf      | Phosphorylation at S259 |
+| Erk1 and Erk2 | Phosphorylation at T202 and Y204 |
+| P38     | Phosphorylation at T180 and Y182 |
+| Jnk     | Phosphorylation at T183 and Y185 |
+| Akt.    | Phosphorylation at S473 |
+| Mek 1 and Mek2 | Phosphorylation at S217 and S221|
+| PKA substrates | Detects proteins and peptides containing a phospho-Ser/Thr residue with arginine at the -3 position|
+| PKC | Detects phosphorylated PKC-α, -βI, -βII, -δ, -ϵ, -η, and -θ isoforms only at C-terminal residue homologous to S660 of PKC-βII |
+| Plcg | Phosphorylation at Y783 |
+| PIP2 | Detects PIP2|
+| PIP3 | Detects PIP3 |
+    
+### Source
+
+K. Sachs, O. Perez, D. Pe’er, D. A. Lauffenburger, G. P. Nolan, Causal protein-signaling networks derived from multiparameter single-cell data. Science 308, 523–529 (2005)
+DOI: 10.1126/science.1105809
+
+
+
+
+
+
+
+
