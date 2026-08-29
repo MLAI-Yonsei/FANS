@@ -218,7 +218,7 @@ if __name__ == "__main__":
     fans_results = fans_analyzer.analyze(
         test_data_env1, test_data_env2,
         save_dir=fans_output_dir,
-        simultaneous_shift=False,
+        simultaneous_shift=True,
         shifted_nodes=shifted_nodes
     )
     

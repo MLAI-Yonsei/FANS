@@ -694,7 +694,7 @@ if __name__ == "__main__":
                        help='Directory containing LinearCCP results')
     parser.add_argument('--splitkci_dir', type=str, default=str(RESULTS_DIR / "splitkci"), 
                        help='Directory containing SplitKCI results')
-    parser.add_argument('--prediter_dir', type=str, default=str(RESULTS_DIR / "prediter_paramtuning"), 
+    parser.add_argument('--prediter_dir', type=str, default=str(RESULTS_DIR / "prediter_result_seq_20260728_000554"), 
                        help='Directory containing PreDITEr results')
     parser.add_argument('--lcit_dir', type=str, default=str(RESULTS_DIR / "lcit_n=1000"), 
                        help='Directory containing LCIT results')
